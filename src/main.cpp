@@ -39,14 +39,18 @@ int main()
   uWS::Hub h;
 
   PID pid;
-  pid.run_state = PID::State::Not_started; // for twiddling
-// pid.run_state = PID::State::Production;  // for non-twiddling production run
 
-  // TODO: Initialize the pid variable.
-  double k[] = {0.125, 0.0002, 3.0};  // 0.134611 0.000270736 3.05349; 0.2250	0.0002130961669	  3.0028
-  double dk[] = {0.1,  0.00005, 0.5};
+//  pid.run_state = PID::State::Not_started; // for twiddling
+//  double k[] = {0.125, 0.0002, 3.0};
+//  double dk[] = {0.03, 0.00005, 0.3};
+
+
+  pid.run_state = PID::State::Production;    // for non-twiddling production run
+  // double k[] = {0.2634, 0.00029455, 3.2869}; // determined after 63 epochs of 500 steps, throttle 0.3
+  double k[] = {0.1550, 0.00025, 3.0}; // determined after 2 epochs of 500 steps, throttle = 0.6
+  double dk[] = {0, 0, 0};
+
   pid.Init(k, dk);
-
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
